@@ -1,54 +1,40 @@
-class Node
-	attr_accessor :value, :parent, :left_child, :right_child
+class BinarySearchTree
 
-	def initialize(value)
-		@value = value
-		@left_child = nil
-		@right_child = nil
-		@parent = nil
-	end
-end
+	class Node
+		attr_reader :value, :left, :right
 
-class Tree
+		def initialize(value)
+			@value = value
+			@left = nil
+			@right = nil
+		end
 
-	def build_tree(array)
-		root = Node.new(array[0])
-		pos = root
-		array[1..-1].each do |node|
-			node = Node.new(node)
-			until node.parent != nil
-				if node.value < pos.value
-					until (node.value < pos.parent.value) || node.parent.nil?
-						pos = pos.parent
-					end
-					if pos.left_child.nil?
-						pos.left_child = node
-						node.parent = pos
-					else
-						pos = pos.left_child
-					end
-				else
-					if pos.parent != nil
-						until node.value > pos.parent.value || node.parent.nil?
-							pos = pos.parent
-						end
-					end
-					if pos.right_child.nil?
-						pos.right_child = node
-						node.parent = pos
-					else
-						pos = pos.right_child
-					end
-				end
+		def insert(new_value)
+			if new_value <= value
+				@left.nil? ? @left = Node.new(new_value) : @left.insert(new_value)
+			elsif new_value > value
+				@right.nil? ? @right = Node.new(new_value) : @right.insert(new_value)
 			end
-			puts
-			puts "Node value: " + node.value.to_s
-			puts
+		end
+	end
+
+	def initialize
+		@root = nil
+	end
+
+	def insert(value)
+		@root.nil? ? @root = Node.new(value) : @root.insert(value)
+	end
+
+	def build(array)
+		array.each do |value|
+			self.insert(value)
 		end
 	end
 
 end
 
-array = [18, 27, 36, 100, 20, 99, 5, 1, 44, 78]
-tree = Tree.new
-tree.build_tree(array)
+array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
+tree = BinarySearchTree.new
+tree.build(array)
+puts tree.inspect
