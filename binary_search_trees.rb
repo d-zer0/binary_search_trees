@@ -32,9 +32,22 @@ class BinarySearchTree
 		end
 	end
 
+	def breadth_first_search(target)
+		return false if @root.nil?
+		queue = [@root]
+		until queue.empty?
+			q = queue[0]
+			return q if q.value == target
+			queue.push(q.left) unless q.left.nil?
+			queue.push(q.right) unless q.right.nil?
+			queue.shift
+		end
+		false
+	end
 end
 
 array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
 tree = BinarySearchTree.new
 tree.build(array)
-puts tree.inspect
+search_result = tree.breadth_first_search(1)
+puts search_result.inspect
